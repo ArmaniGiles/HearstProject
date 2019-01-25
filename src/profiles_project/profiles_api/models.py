@@ -12,14 +12,23 @@ class UserProfileManager(BaseUserManager):
             raise ValueError('Users must have an email address')
         
         email = self.normalize_email(email)
+        print("email in create_user : ", email)
+        print("emailType : ",type(email) )
         user = self.model(email=email, name=name)
+        print("user : ", user)
+        print("userType : ", type(user)) 
+ 
+
 
         user.set_password(password)
         user.save(using=self._db)
+
+        return user
     
     def create_superuser(self, email, name, password):
         """Creates and saves a new superuser with details."""
         user = self.create_user(email, name, password)
+
         user.is_superuser = True
         user.is_staff = True
 
@@ -29,6 +38,7 @@ class UserProfileManager(BaseUserManager):
         return user
 
 
+import sys
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Represent a "user profile" inside our system.""" 
 
@@ -37,7 +47,9 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
+    # print("UserProfileManager() : ",UserProfileManager())
     objects = UserProfileManager()
+    # print("objects : ", objects)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['name']
 
@@ -50,6 +62,6 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         
         return self.name 
     def __str__(self):
-        """ Djanog uses this when it needs to  convert the objecy to a string"""
+        """ Django uses this when it needs to  convert the objecy to a string"""
         
         return self.email
