@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView 
 from rest_framework.response import Response
 from rest_framework import status 
+from . import models
 # Create your views here.
 from . import serializers
 
@@ -22,14 +23,14 @@ class HelloApiView(APIView):
 
     def post(self, request):
         """Create a hello message with our name."""
-
+        print("request : ", request)
         serializer = serializers.HelloSerializer(data=request.data)
         print("request.data : ",request.data)
         print("serializers.HelloSerializer(data=request.data) : ",serializers.HelloSerializer(data=request.data))
 
         if serializer.is_valid():
-            name = serializer.data.get('name')
-            print("serializer.data.get('name') : ",serializer.data.get('name'))
+            name = serializer.data.get('na')
+            print("serializer.data.get('n') : ",serializer.data.get('na'))
             message = 'Hello {0}'.format(name)
             return Response({'message':message})
         else:
@@ -63,10 +64,14 @@ class HelloViewSet(viewsets.ViewSet):
 
     def create(self, request ):
         """Create a new Hello message."""
+        print("SDSDFDSFDsdf")
+        print("request : ",request)
 
-        serializer = serializers.HelloSerializer(data=request.data)
+        print("request.data : ",request.data)
+        serializer = serializers.HelloSerializer(data=request.data)# is this creating an object or refererencing a class?
+        print("serializer : ",serializer)
 
-        if serializer.is_valid():
+        if serializer.is_valid():# is this deserializing
             name = serializer.data.get('name')
             message = 'Hello {0}'.format(name)
             return Response({'message': message})
@@ -88,6 +93,28 @@ class HelloViewSet(viewsets.ViewSet):
 
     def destroy(self,request,pk=None):
         """Handles removing an object """
-        
+
         return Response({'http_method' : 'DELETE'})
 
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handles creating, amd updating profiles"""
+    serializer_class = serializers.UserProfileSerializers
+    queryset = models.UserProfile.objects.all() #are we extracting frm the database what does it actual do?
+    #queryset = models.UserProfile.objects.filter(name__startswith='a')
+    # what do the queryset do?
+    # why is AAAAAAA is print?
+    #does the ModelViewSet herit its properties from viewset
+    #can you fix my script?
+
+
+# class TestAPIView():
+
+#     def get(request):
+#         pass
+
+#     def post(request):
+#         name = request.POST.get('name')
+#         email = request.POST.get('email')
+#         models.UserProfile.objects.create(name=name, email = email)
+#         # return Response()
+#         pass
