@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView 
 from rest_framework.response import Response
 from rest_framework import status 
+from rest_framework import filters
 from rest_framework.authentication import TokenAuthentication
 from . import models
 from . import permissions
@@ -105,7 +106,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
-
+    filter_backends = (filters.SearchFilter,)
+    search_fields =('name', 'email',)
     print("serializer_class : SSSSSSSSSSS ",serializer_class)
     print("models.UserProfile.objects.all() : ",models.UserProfile.objects.all())
     #are we extracting frm the database what does it actual do?
