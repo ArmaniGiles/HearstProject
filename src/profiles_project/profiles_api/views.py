@@ -3,7 +3,9 @@ from rest_framework import viewsets
 from rest_framework.views import APIView 
 from rest_framework.response import Response
 from rest_framework import status 
+from rest_framework.authentication import TokenAuthentication
 from . import models
+from . import permissions
 # Create your views here.
 from . import serializers
 
@@ -98,8 +100,17 @@ class HelloViewSet(viewsets.ViewSet):
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     """Handles creating, amd updating profiles"""
+    
     serializer_class = serializers.UserProfileSerializers
-    queryset = models.UserProfile.objects.all() #are we extracting frm the database what does it actual do?
+    queryset = models.UserProfile.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
+
+    print("serializer_class : SSSSSSSSSSS ",serializer_class)
+    print("models.UserProfile.objects.all() : ",models.UserProfile.objects.all())
+    #are we extracting frm the database what does it actual do?
+    print("Wow")
+    # print("queryset : ",queryset)
     #queryset = models.UserProfile.objects.filter(name__startswith='a')
     # what do the queryset do?
     # why is AAAAAAA is print?

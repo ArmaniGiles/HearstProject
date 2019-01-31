@@ -20,13 +20,11 @@ class HelloSerializer(serializers.Serializer):
         # one way defualt there is a serializers method
 class UserProfileSerializers(serializers.ModelSerializer):
     """A serializers for user profile objects."""
-    print("AAAAAAAAAAAAAAAAAAAAA")
+    print("At the top of UserProfileSerializers")
     class Meta:
         model  = models.UserProfile
         fields = ('id','email','name','password')
-        extra_kwargs = {'passwword':{'write_only': True}}
-    print("AAAAAAAAAAAAAAAAAAAAA")
-
+        extra_kwargs = {'password':{'write_only': True}}
 
     # def validate(self):
     #     if self.email in []:
@@ -35,13 +33,17 @@ class UserProfileSerializers(serializers.ModelSerializer):
 
     def create(self,validated_data):
         """Create and return a new user."""
-        print(validated_data)
+        
+        print("(inside create) validated_data : ",validated_data)
         user = models.UserProfile(
             email=validated_data['email'],
             name=validated_data['name'],
         )
+        print("user.is_active : ",user.is_active)
         user.set_password(validated_data['password'])
         user.save()
         print("user : ",user)
+
+        
 
         return user
