@@ -10,6 +10,8 @@ from . import permissions
 # Create your views here.
 from . import serializers
 
+from datetime import date
+
 
 class HelloApiView(APIView):
     """Test Api View."""
@@ -67,12 +69,7 @@ class HelloViewSet(viewsets.ViewSet):
 
     def create(self, request ):
         """Create a new Hello message."""
-        print("SDSDFDSFDsdf")
-        print("request : ",request)
-
-        print("request.data : ",request.data)
         serializer = serializers.HelloSerializer(data=request.data)# is this creating an object or refererencing a class?
-        print("serializer : ",serializer)
 
         if serializer.is_valid():# is this deserializing
             name = serializer.data.get('name')
@@ -104,30 +101,38 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     
     serializer_class = serializers.UserProfileSerializers
     queryset = models.UserProfile.objects.all()
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.UpdateOwnProfile,)
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields =('name', 'email',)
-    print("serializer_class : SSSSSSSSSSS ",serializer_class)
-    print("models.UserProfile.objects.all() : ",models.UserProfile.objects.all())
-    #are we extracting frm the database what does it actual do?
-    print("Wow")
-    # print("queryset : ",queryset)
-    #queryset = models.UserProfile.objects.filter(name__startswith='a')
-    # what do the queryset do?
-    # why is AAAAAAA is print?
-    #does the ModelViewSet herit its properties from viewset
-    #can you fix my script?
 
+    def list(self, request):
+        term = request.GET.get('term')
+        if term:
+            self.queryset = self.queryset.filter(name__istartswith=term)
+        return super(UserProfileViewSet, self).list(request)
 
-# class TestAPIView():
+def authenticate_user(request):
+    from rest_framework.authtoken.models import Token
+    #Token.objects.create(user=user)
+    pass
 
-#     def get(request):
-#         pass
+class CourseViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.CourseSerializer
+    queryset = models.Course.objects.all()
 
-#     def post(request):
-#         name = request.POST.get('name')
-#         email = request.POST.get('email')
-#         models.UserProfile.objects.create(name=name, email = email)
-#         # return Response()
-#         pass
+    def list(self, request):
+        term = request.GET.get('term')
+        if term:
+            self.queryset = self.queryset.filter(name__istartswith=term)
+        start_date = request.GET.get('start_date')
+        if start_date:
+            # start_date must be in YYYY-MM-DD format
+            start_date = start_date.split('-')
+            year, month, day = int(start_date[0]), int(start_date[1]), int(start_date[2])
+            start_date = date(year, month, day)
+            self.queryset = self.queryset.filter(startDate__gte=start_date)
+        return super(CourseViewSet, self).list(request)
+
+        
+

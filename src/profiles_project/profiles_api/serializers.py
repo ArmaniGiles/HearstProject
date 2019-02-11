@@ -1,10 +1,30 @@
 from rest_framework import serializers
 from  . import models
 
+
+class UserProfileInfoSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserProfile
+        fields = ('id', 'name')
+
+
+class CourseSerializer(serializers.ModelSerializer):
+    users = serializers.SerializerMethodField()
+    class Meta:
+        model = models.Course
+        fields = ('id', 'name', 'startDate', 'users')
+        #  Course.objects.all()[0].courses.all()[0].name
+    
+    def get_users(self, obj):
+        users = obj.courses.all()
+        users = UserProfileInfoSerializers(users, many=True).data
+        return users
+        # return 'Ajay'
+
 class HelloSerializer(serializers.Serializer):
     """ Serializers a name field for testing our APIView."""
 
-    na = serializers.CharField(max_length=10) # it serializers the data
+    name = serializers.CharField(max_length=10) # it serializers the data
     #what does this acrually do?
 
     # def validate_name(self):
@@ -21,9 +41,10 @@ class HelloSerializer(serializers.Serializer):
 class UserProfileSerializers(serializers.ModelSerializer):
     """A serializers for user profile objects."""
     print("At the top of UserProfileSerializers")
+    courses = CourseSerializer(many=True)
     class Meta:
         model  = models.UserProfile
-        fields = ('id','email','name','password')
+        fields = ('id','email','name','password', 'courses')
         extra_kwargs = {'password':{'write_only': True}}
 
     # def validate(self):

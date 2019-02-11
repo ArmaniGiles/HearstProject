@@ -10,9 +10,13 @@ router = DefaultRouter()
 
 router.register('hello-viewset', views.HelloViewSet, base_name='hello-viewset')
 router.register('profile', views.UserProfileViewSet)
+router.register('courses', views.CourseViewSet)
+
+
 
 
 urlpatterns = [
-     url(r'^hello-view/',views.HelloApiView.as_view()),
-     url(r'',include(router.urls))
- ]
+    url(r'^hello-view/',views.HelloApiView.as_view()),
+    url(r'',include(router.urls)),
+    url(r'^authenticate-user/', views.authenticate_user),
+]

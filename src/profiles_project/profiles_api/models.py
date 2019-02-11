@@ -12,14 +12,7 @@ class UserProfileManager(BaseUserManager):
             raise ValueError('Users must have an email address')
         
         email = self.normalize_email(email)
-        print("email in create_user : ", email)
-        print("emailType : ",type(email) )
         user = self.model(email=email, name=name)
-        print("user : ", user)
-        print("userType : ", type(user)) 
- 
-
-
         user.set_password(password)
         user.save(using=self._db)
 
@@ -37,6 +30,13 @@ class UserProfileManager(BaseUserManager):
             
         return user
 
+class Course(models.Model):
+    name = models.CharField(max_length=200)
+    startDate = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
 
 import sys
 class UserProfile(AbstractBaseUser, PermissionsMixin):
@@ -46,6 +46,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    courses = models.ManyToManyField(Course, related_name='courses', blank=True, null=True)
 
     # print("UserProfileManager() : ",UserProfileManager())
     objects = UserProfileManager()
@@ -65,3 +66,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         """ Django uses this when it needs to  convert the objecy to a string"""
         
         return self.email
+
+
+
+
