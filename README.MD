@@ -9,9 +9,15 @@ IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
 I wasn't able to use Docker because I don't have Windows Enterprise or Windows Pro
 Therefore I used Django's Default Database(SQLite) so there will be no interruptions/conflicts for running my program
 
+HOW TO NAGIVATE HOW TO NAGIVATE HOW TO NAGIVATE!!!!!!!!!
+HOW TO NAGIVATE HOW TO NAGIVATE HOW TO NAGIVATE!!!!!!!!!
+1.) Navigate to http://127.0.0.1:8000/dashboard/students/ or http://127.0.0.1:8000/dashboard/courses/ to see the bootstrap 
+    VERSION.
+2.) Navigate to http://127.0.0.1:8000/api/profile/ or http://127.0.0.1:8000/api/courses/ to view the API
 
 
 
+Q&A
 1.) Was the question/problem clear? 
     Yes I think the question was clear.
     
