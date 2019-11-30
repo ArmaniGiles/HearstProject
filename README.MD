@@ -2,12 +2,6 @@
 # HearstProject
 REST API providing basic functionality for managing user profiles.
 
-IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
-IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
-IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
-
-I wasn't able to use Docker because I don't have Windows Enterprise or Windows Pro,
-therefore I used Django's Default Database(SQLite) so there will be no interruptions/conflicts for running my program
 
 HOW TO NAGIVATE HOW TO NAGIVATE HOW TO NAGIVATE!!!!!!!!!
 HOW TO NAGIVATE HOW TO NAGIVATE HOW TO NAGIVATE!!!!!!!!!
